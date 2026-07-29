@@ -1,0 +1,32 @@
+<Project Sdk="Godot.NET.Sdk/4.6.2">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <Nullable>disable</Nullable>
+    <RootNamespace>OmniCharacter</RootNamespace>
+  </PropertyGroup>
+
+  <!--
+    The design prototypes live in ../Research and stay there. Compiling them
+    from their own folder rather than copying them in keeps one source of
+    truth: the files the design discussion refers to are the files the harness
+    actually runs.
+
+    Only the worked prototype is included. Research/Abilityruntime.cs and
+    Research/Rulevalidation.cs at the Research root are superseded earlier
+    drafts of two of these files, and including them would be a duplicate
+    definition, not a second opinion.
+
+    Node-derived prototype classes compile into the assembly but are NOT
+    attachable in a scene, because Godot can only bind a script it can name
+    with a res:// path and these live outside the project. The harness does
+    not need them attached — it drives the plain classes directly.
+  -->
+  <ItemGroup>
+    <Compile Include="..\Research\Claude gen research impl\**\*.cs">
+      <Link>Research\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>
