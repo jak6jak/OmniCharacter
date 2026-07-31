@@ -57,7 +57,13 @@ target_sources(${LIBNAME}
     src/register_types.h
     src/example_class.cpp
     src/example_class.h
+    src/Framework/Pack.cpp
+    src/Framework/Pack.h
 )
+
+# Mirrors the SConstruct's CPPPATH=["src/"] so headers can be included
+# relative to the src root, e.g. #include "Framework/Pack.h"
+target_include_directories(${LIBNAME} PRIVATE src)
 
 # Fetch a list of the xml files to use for documentation and add to our target
 file(GLOB_RECURSE DOC_XML LIST_DIRECTORIES NO CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/doc_classes/*.xml")
@@ -86,5 +92,17 @@ set_target_properties(${LIBNAME}
 set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/bin/${GODOTCPP_PLATFORM}")
 
 add_custom_command(TARGET ${LIBNAME} POST_BUILD
+    # The destination may not exist yet on a fresh clone, so create it first.
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${GODOT_PROJECT_BINARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIBNAME}>" "${GODOT_PROJECT_BINARY_DIR}/$<TARGET_FILE_NAME:${LIBNAME}>"
 )
+
+# Keep a copy of the compilation database at the source root, where clangd
+# (and therefore Zed) looks for it by default.
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+    add_custom_command(TARGET ${LIBNAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_BINARY_DIR}/compile_commands.json"
+            "${PROJECT_SOURCE_DIR}/compile_commands.json"
+    )
+endif()

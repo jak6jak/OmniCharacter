@@ -1,0 +1,44 @@
+[
+  {
+    "label": "Build GDExtension (debug)",
+    "command": "cmake",
+    "args": ["--workflow", "--preset", "debug"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false,
+    "use_new_terminal": false
+  },
+  {
+    "label": "Build GDExtension (release)",
+    "command": "cmake",
+    "args": ["--workflow", "--preset", "release"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false,
+    "use_new_terminal": false
+  },
+  {
+    "label": "Build GDExtension (editor)",
+    "command": "cmake",
+    "args": ["--workflow", "--preset", "editor"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false,
+    "use_new_terminal": false
+  },
+  {
+    "label": "CMake: clean rebuild (debug)",
+    "command": "cmake",
+    "args": ["--build", "--preset", "debug", "--clean-first"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always",
+    "allow_concurrent_runs": false
+  },
+  {
+    "label": "CMake: wipe build directory",
+    "command": "cmake",
+    "args": ["-E", "rm", "-rf", "build"],
+    "cwd": "$ZED_WORKTREE_ROOT",
+    "reveal": "always"
+  }
+]

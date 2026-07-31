@@ -1,0 +1,107 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      }
+    },
+    {
+      "name": "windows",
+      "hidden": true,
+      "inherits": "base",
+      "description": "Must be clang-cl, not clang++. godot-cpp only defines TYPED_METHOD_BIND when CMAKE_CXX_COMPILER_FRONTEND_VARIANT is MSVC (see godot-cpp/cmake/common_compiler_flags.cmake, compiler_detection). Without it, method_bind.hpp reinterpret_casts member pointers to the incomplete type _gde_UnexistingClass, which is a different size under the MSVC ABI and fails to compile. MSVC cl.exe works too.",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "debug",
+      "displayName": "Debug (template_debug)",
+      "description": "The build Godot loads when running the project from the editor or an exported debug build.",
+      "inherits": "windows",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "GODOTCPP_TARGET": "template_debug"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release (template_release)",
+      "description": "Optimised build used by exported release builds.",
+      "inherits": "windows",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "GODOTCPP_TARGET": "template_release"
+      }
+    },
+    {
+      "name": "editor",
+      "displayName": "Editor",
+      "description": "Build with editor-only APIs available, for tool scripts and plugins.",
+      "inherits": "windows",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "GODOTCPP_TARGET": "editor"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "debug",
+      "displayName": "Debug",
+      "configurePreset": "debug"
+    },
+    {
+      "name": "release",
+      "displayName": "Release",
+      "configurePreset": "release"
+    },
+    {
+      "name": "editor",
+      "displayName": "Editor",
+      "configurePreset": "editor"
+    }
+  ],
+  "workflowPresets": [
+    {
+      "name": "debug",
+      "displayName": "Configure + build debug",
+      "steps": [
+        { "type": "configure", "name": "debug" },
+        { "type": "build", "name": "debug" }
+      ]
+    },
+    {
+      "name": "release",
+      "displayName": "Configure + build release",
+      "steps": [
+        { "type": "configure", "name": "release" },
+        { "type": "build", "name": "release" }
+      ]
+    },
+    {
+      "name": "editor",
+      "displayName": "Configure + build editor",
+      "steps": [
+        { "type": "configure", "name": "editor" },
+        { "type": "build", "name": "editor" }
+      ]
+    }
+  ]
+}

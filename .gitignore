@@ -48,6 +48,7 @@ compile_commands.json
 .idea/
 
 # Cmake
+/build/
 cmake-build*
 CMakeUserPresets.json
 CMakeFiles/
