@@ -50,3 +50,5 @@ compile_commands.json
 # Cmake
 cmake-build*
 CMakeUserPresets.json
+CMakeFiles/
+__cmake_systeminformation/
