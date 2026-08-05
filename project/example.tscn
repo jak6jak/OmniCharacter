@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dh0oj81pufivs"]
 
-[ext_resource type="Script" uid="uid://bkwk40ybs8kgm" path="res://example.gd" id="1_jdh55"]
+[sub_resource type="Pack" id="Pack_vagxm"]
+pack_name = &"hello"
 
-[node name="Node" type="Node" unique_id=1462734473]
-script = ExtResource("1_jdh55")
+[node name="OmniCharacter" type="OmniCharacter" unique_id=339518228]
+animation_packs = Array[Pack]([SubResource("Pack_vagxm")])

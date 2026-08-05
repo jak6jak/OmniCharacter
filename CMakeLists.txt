@@ -14,11 +14,11 @@ find_program(GIT git REQUIRED)
 
 # Ensure godot-cpp submodule has been updated
 if(NOT EXISTS "${CMAKE_CURRENT_LIST_DIR}/godot-cpp/src")
-    message(NOTICE "godot-cpp bindings source not found")
-    message(NOTICE "initializing/updating the godot-cpp submodule...")
+  message(NOTICE "godot-cpp bindings source not found")
+  message(NOTICE "initializing/updating the godot-cpp submodule...")
 
-    # update the c++ bindings submodule to populate it with the necessary source for the library
-    execute_process(
+  # update the c++ bindings submodule to populate it with the necessary source for the library
+  execute_process(
         COMMAND git submodule update --init godot-cpp
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         COMMAND_ERROR_IS_FATAL ANY
@@ -57,6 +57,8 @@ target_sources(${LIBNAME}
     src/register_types.h
     src/example_class.cpp
     src/example_class.h
+    src/Framework/OmniCharacter.cpp
+    src/Framework/OmniCharacter.h
     src/Framework/Pack.cpp
     src/Framework/Pack.h
 )
@@ -70,9 +72,9 @@ file(GLOB_RECURSE DOC_XML LIST_DIRECTORIES NO CONFIGURE_DEPENDS "${PROJECT_SOURC
 
 # conditionally add doc data to compile output
 if(DOC_XML)
-    if(GODOTCPP_TARGET MATCHES "editor|template_debug")
-        target_doc_sources(${LIBNAME} "${DOC_XML}")
-    endif()
+  if(GODOTCPP_TARGET MATCHES "editor|template_debug")
+    target_doc_sources(${LIBNAME} "${DOC_XML}")
+  endif()
 endif()
 
 target_link_libraries(${LIBNAME} PRIVATE godot-cpp)
@@ -100,7 +102,7 @@ add_custom_command(TARGET ${LIBNAME} POST_BUILD
 # Keep a copy of the compilation database at the source root, where clangd
 # (and therefore Zed) looks for it by default.
 if(CMAKE_EXPORT_COMPILE_COMMANDS)
-    add_custom_command(TARGET ${LIBNAME} POST_BUILD
+  add_custom_command(TARGET ${LIBNAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_BINARY_DIR}/compile_commands.json"
             "${PROJECT_SOURCE_DIR}/compile_commands.json"
